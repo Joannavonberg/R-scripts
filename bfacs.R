@@ -76,7 +76,7 @@ ColourByChain <- function(){
 
 PlotB <- function(dat, colours, main="test", save=FALSE, normalized=TRUE){
       if (save){
-      	 png("norm_bfactors_300K_NVT_cryodim.png", width=480*2.4, height=480*2)
+      	 pdf("norm_bfactors_300K_NVT_cryodim.pdf", width=480*2.4, height=480*2)
       }
       if(normalized){
 	yl=c(-2, 7)
@@ -99,7 +99,7 @@ PlotB <- function(dat, colours, main="test", save=FALSE, normalized=TRUE){
       }
 }
 
-png("bfactors_300K_NVT_cryodim.png", width=480*2.4, height=480*2)
+pdf("bfactors_300K_NVT_cryodim.pdf", width=480*2.4, height=480*2)
 
 par(mar=c(5.1, 8.1, 4.1, 8.1), xpd=TRUE)
 plot(dat$A, main="C-alpha B-factors of PCA results \n combined PCA on 8*50 ns of 300 K NVT simulation (cryo-dimensions)", xlab="residues", ylab="B-factor (A^2)", type="l", pch=19, cex=2, lwd=2, ylim=c(0, 90), col=rgb(t(c[,4]), alpha=c[4,4], maxColorValue = 255))

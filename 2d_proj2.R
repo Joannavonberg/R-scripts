@@ -4,7 +4,7 @@ library("corrplot")
 options(stringsAsFactors = FALSE)
 
 for(let in LETTERS[1:8]){
-  assign(let, read.table(sprintf("proj_%s.xvg", let), skip = 16))
+  assign(let, read.table(sprintf("proj_%s.xvg", let), skip = 24))
 }
 
 png("2D_proj.png", width = 1000, height = 1000)

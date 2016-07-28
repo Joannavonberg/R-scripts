@@ -1,4 +1,5 @@
 library("TeachingDemos")
+#library(ggplot2)
 
 #PC1 <- read.table("proj_200ns2.xvg", skip = 24)
 #PC2 <- read.table("proj_200ns_PC2.xvg", skip = 22)
@@ -69,23 +70,23 @@ cra[,1] <- begin:end
 
 cra <- data.frame(cra)
 colnames(cra) <- c("Time", "PC1", "PC2")
-cra$cluster <- uc_c$fit.cluster[begin:end]
+#cra$cluster <- uc_c$fit.cluster[begin:end]
 
 for(i in cra[,1]){
      range <- (i-fl):(i+fl)
      #range <- (i-1):(i+1)
      cra$PC1[i-fl] <- mean(uc[,1][range])
      cra$PC2[i-fl] <- mean(uc[,2][range])
-     cra$cluster[i-fl] <- mode(uc_c$fit.cluster[range])
+     #cra$cluster[i-fl] <- mode(uc_c$fit.cluster[range])
 }
 
-cra$colour <- col[cra$cluster]
+#cra$colour <- col[cra$cluster]
 
 lines(cra$PC1, cra$PC2, lwd = 2)
 
 # combining centered rolling average with clusters
 
-png("proj_clusters_transitions+timepoints.png", width = 800, height = 800)
+pdf("proj_clusters_transitions+timepoints.pdf")
 
 #plot(uc, type = "n", main = "Projection of 60 ns trajectory along the first two combined principal components", xlab = "Principal component 1 (nm)", ylab = "Principal component 2 (nm)")
 
@@ -99,15 +100,12 @@ for(i in 1:n){
     lines(cra[ind2,2], cra[ind2,3], lwd = 3, col = col[i])
 }
 
-# prints lines with times for every 10 ns
-for(i in seq(1000, 20000, 1000)){
+# prints lines with times for every 20 ns
+for(i in seq(1000, 20000, 2000)){
     offset <- 0.1
     lines(c(cra$PC1[i-fl] - offset, cra$PC1[i-fl]+offset), c(cra$PC2[i-fl], cra$PC2[i-fl]), lwd = 3)
     shadowtext(cra$PC1[i-fl]+offset, cra$PC2[i-fl], pos = 3, labels = sprintf("%.0f ns", i/100), col = "white", bg = "black")
 }
-
-i = 19996
-text(cra$PC1[i-fl]+offset, cra$PC2[i-fl], pos = 3, labels = sprintf("%.0f ns", i/100), col = "red")
 
 # prints lines with times for cluster transitions
 offset <- 0.5
@@ -134,12 +132,15 @@ mode <- function(x){
 }
 
 
-png("200ns_proj_timesteps_lesssteps.png", width = 800, height = 800)
+pdf("200ns_proj_notitle2.pdf")
 
-plot(uc, main = "Projection of simulation on first 2 principal components", xlab = "PC1", ylab = "PC2", cex = 0.01, col = kleurtjes(length(uc[,1])))
+#par(mar = c(4.5,4.5,1,1))
+plot(uc, main = NULL, xlab = "PC1 (nm)", ylab = "PC2 (nm)", 
+     pch = 16, cex = 0.4, 
+     col = kleurtjes(length(uc[,1])))
 lines(cra$PC1, cra$PC2, lwd = 2)
-for(i in seq(1000, 20000, 2000)){
-    offset <- 0.1
+offset <- 0.1
+for(i in c(500, seq(5000, 20000, 5000), 19500)){
     lines(c(cra$PC1[i-fl] - offset, cra$PC1[i-fl]+offset), c(cra$PC2[i-fl], cra$PC2[i-fl]), lwd = 3)
     shadowtext(cra$PC1[i-fl]+offset, cra$PC2[i-fl], pos = 3, labels = sprintf("%.0f ns", i/100), col = "white", bg = "black")
 }
